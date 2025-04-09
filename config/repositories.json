@@ -1,0 +1,23 @@
+{
+  "repositories": [
+    {
+      "name": "linkedin-extract",
+      "url": "https://github.com/your-org/linkedin-extract",
+      "type": "node",
+      "required_env": ["LINKEDIN_API_KEY"],
+      "config_template": {
+        "api_key": "${LINKEDIN_API_KEY}"
+      }
+    },
+    {
+      "name": "brave-search",
+      "url": "https://github.com/your-org/brave-search",
+      "type": "python",
+      "required_env": ["BRAVE_API_KEY"],
+      "config_template": {
+        "api_key": "${BRAVE_API_KEY}"
+      }
+    }
+    // ... otros repositorios
+  ]
+} 
