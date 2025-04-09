@@ -151,55 +151,6 @@ python setup.py --verbose  # Modo verboso
 python setup.py --skip-tests  # Omite ejecución de pruebas
 ```
 
-## 📁 Estructura del Proyecto 
-
-# Inicializar el repositorio
-git init
-
-# Crear y cambiar a la rama develop
-git checkout -b develop
-
-# Agregar todos los archivos
-git add .
-
-# Crear el commit inicial
-git commit -m "feat(initial): Configuración inicial del proyecto MCP Setup Tool
-
-Este commit incluye la estructura base del proyecto con las siguientes características:
-
-Estructura:
-- Arquitectura modular siguiendo principios SOLID
-- Implementación de patrones Factory y Strategy
-- Sistema de logging asíncrono
-- Gestión de configuración centralizada
-
-Componentes principales:
-- Gestión de repositorios Git
-- Configuración de entorno multiplataforma
-- Gestión de paquetes (Node.js y Python)
-- Sistema de pruebas automatizadas
-
-Documentación:
-- README.md completo con instrucciones de instalación
-- Documentación de configuración y uso
-- Guía de solución de problemas
-
-Configuración:
-- .gitignore optimizado para Python/Node.js
-- Estructura de directorios base
-- Templates de configuración
-
-Testing:
-- Estructura base para pruebas unitarias
-- Configuración de pytest
-
-Seguridad:
-- Manejo seguro de tokens y credenciales
-- Validación de variables de entorno
-- Gestión de secretos
-
-Resolves: #1
-"
 
 # Configurar el repositorio remoto (asumiendo que ya está creado en GitHub)
 # git remote add origin https://github.com/your-org/mcp-setup.git
