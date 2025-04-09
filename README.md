@@ -14,20 +14,29 @@ Una herramienta multiplataforma para automatizar la configuración del entorno d
 
 ## 🔧 Prerrequisitos
 
-### Requisitos del Sistema
+### Requisitos Mínimos del Sistema
 
+#### Para Windows
+- Windows 10 o superior
+- PowerShell 5.0 o superior
+- Permisos de administrador
+- Conexión a Internet
+
+#### Para macOS
+- macOS 10.15 (Catalina) o superior
+- Terminal
+- Permisos de administrador
+- Conexión a Internet
+
+### Nota sobre la Instalación Automática
+Los siguientes componentes se instalarán automáticamente mediante los scripts de instalación:
 - Python 3.8 o superior
 - Git
-- Acceso a Internet
-- Permisos de administrador (para algunas instalaciones)
+- Homebrew (macOS)
+- Command Line Tools (macOS)
+- Chocolatey (Windows)
 
-### Para Windows
-- PowerShell 5.0 o superior
-- Permisos para ejecutar scripts de PowerShell
-
-### Para macOS
-- Command Line Tools (CLT) para Xcode
-- Homebrew (se instalará automáticamente si no está presente)
+Si ya tienes instalados algunos de estos componentes, los scripts verificarán las versiones y solo actualizarán si es necesario.
 
 ## 🚀 Instalación
 
@@ -37,7 +46,35 @@ git clone https://github.com/your-org/mcp-setup.git
 cd mcp-setup
 ```
 
-2. Crear y activar un entorno virtual:
+2. Ejecutar el script de instalación de dependencias según tu sistema operativo:
+
+```bash
+# Windows (ejecutar PowerShell como administrador)
+.\scripts\install_dependencies.ps1
+
+# macOS/Linux
+chmod +x ./scripts/install_dependencies.sh
+./scripts/install_dependencies.sh
+```
+
+Este paso instalará:
+- Python (última versión estable)
+- Git
+- Homebrew (solo macOS)
+- Command Line Tools (solo macOS)
+- Chocolatey (solo Windows)
+
+3. Verificar la instalación:
+```bash
+# Verificar Python
+python --version  # Windows
+python3 --version  # macOS/Linux
+
+# Verificar Git
+git --version
+```
+
+4. Crear y activar un entorno virtual:
 ```bash
 # Windows
 python -m venv venv
@@ -48,10 +85,29 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-3. Instalar dependencias:
+5. Instalar dependencias de Python:
 ```bash
 pip install -r requirements.txt
 ```
+
+### Verificación de la Instalación
+
+Después de ejecutar los scripts de instalación, puedes verificar que todo se instaló correctamente:
+
+```bash
+# Verificar componentes instalados
+python --version  # o python3 --version en macOS
+git --version
+npm --version     # Si se instaló Node.js
+pyenv --version   # Si se instaló pyenv
+nvm --version     # Si se instaló nvm
+
+# Verificar permisos y rutas
+echo $PATH        # En macOS/Linux
+echo %PATH%       # En Windows
+```
+
+Si encuentras algún problema, consulta la sección [Solución de Problemas](#solución-de-problemas).
 
 ## ⚙️ Configuración
 
