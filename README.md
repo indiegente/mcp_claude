@@ -30,7 +30,8 @@ Una herramienta multiplataforma para automatizar la configuración del entorno d
 
 ### Nota sobre la Instalación Automática
 Los siguientes componentes se instalarán automáticamente mediante los scripts de instalación:
-- Python 3.8 o superior
+- Python 3.10 o superior
+- Node.js 18.0.0 o superior
 - Git
 - Homebrew (macOS)
 - Command Line Tools (macOS)
@@ -58,7 +59,8 @@ chmod +x ./scripts/install_dependencies.sh
 ```
 
 Este paso instalará:
-- Python (última versión estable)
+- Python 3.10 o superior
+- Node.js 18.0.0 o superior
 - Git
 - Homebrew (solo macOS)
 - Command Line Tools (solo macOS)
@@ -69,6 +71,9 @@ Este paso instalará:
 # Verificar Python
 python --version  # Windows
 python3 --version  # macOS/Linux
+
+# Verificar Node.js
+node --version
 
 # Verificar Git
 git --version
@@ -90,124 +95,106 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Verificación de la Instalación
-
-Después de ejecutar los scripts de instalación, puedes verificar que todo se instaló correctamente:
-
-```bash
-# Verificar componentes instalados
-python --version  # o python3 --version en macOS
-git --version
-npm --version     # Si se instaló Node.js
-pyenv --version   # Si se instaló pyenv
-nvm --version     # Si se instaló nvm
-
-# Verificar permisos y rutas
-echo $PATH        # En macOS/Linux
-echo %PATH%       # En Windows
-```
-
-Si encuentras algún problema, consulta la sección [Solución de Problemas](#solución-de-problemas).
-
 ## ⚙️ Configuración
 
-### 1. GitHub Token
-
-Necesitarás un token de acceso personal de GitHub con los siguientes permisos:
-- `repo` (acceso completo)
-- `read:org`
-
-Para generar un token:
-1. Ve a [GitHub Settings > Developer Settings > Personal Access Tokens](https://github.com/settings/tokens)
-2. Haz clic en "Generate new token"
-3. Selecciona los permisos mencionados
-4. Copia el token generado
-
-El token puede ser configurado de tres formas:
-```bash
-# 1. Variable de entorno
-export GITHUB_TOKEN=your_token_here
-
-# 2. Archivo de configuración
-mkdir -p ~/.mcp
-echo "your_token_here" > ~/.mcp/github_token
-
-# 3. Interactivamente durante la ejecución del script
-# (el script te pedirá el token si no lo encuentra configurado)
-```
-
-### 2. Configuración de Repositorios
-
-Revisa y ajusta el archivo `config/repositories.json` según tus necesidades:
-
+1. Configurar el archivo `config/repositories.json`:
 ```json
 {
-  "repositories": [
-    {
-      "name": "linkedin-extract",
-      "url": "https://github.com/your-org/linkedin-extract",
-      "type": "node",
-      "required_env": ["LINKEDIN_API_KEY"]
-    },
-    // ... otros repositorios
-  ]
+    "base_path": "/path/to/your/mcp/servers",
+    "repositories": [
+        {
+            "url": "https://github.com/your-org/mcp-server-trello.git",
+            "env_vars": {
+                "TRELLO_API_KEY": "your-api-key",
+                "TRELLO_TOKEN": "your-token",
+                "TRELLO_BOARD_ID": "your-board-id"
+            }
+        },
+        {
+            "url": "https://github.com/your-org/mcp-google-calendar.git",
+            "env_vars": {
+                "GOOGLE_CLIENT_ID": "your-client-id",
+                "GOOGLE_CLIENT_SECRET": "your-client-secret",
+                "GOOGLE_REFRESH_TOKEN": "your-refresh-token"
+            }
+        }
+    ]
 }
 ```
 
-### 3. Variables de Entorno
+2. Configurar las variables de entorno necesarias para cada MCP:
+   - Para Trello: API Key, Token y Board ID
+   - Para Google Calendar: Client ID, Client Secret y Refresh Token
 
-Prepara las variables de entorno necesarias para cada repositorio. Puedes:
-1. Configurarlas en tu sistema
-2. Crear un archivo `.env` en cada repositorio
-3. Dejar que el script las solicite interactivamente
+## 🛠️ Uso
 
-## 📦 Uso
-
-### Ejecución Básica
-
+1. Iniciar el setup:
 ```bash
-# Windows (como administrador)
-python setup.py
-
-# macOS/Linux
-python3 setup.py
+python -m setup
 ```
 
-### Proceso de Ejecución
+2. Seguir las instrucciones para cada MCP:
+   - Para Trello: Se configurará automáticamente con las credenciales proporcionadas
+   - Para Google Calendar: 
+     - Se creará un archivo `.env` con las credenciales
+     - Se configurará el refresh token en `index.js`
+     - Si no hay refresh token, se guiará al usuario para obtenerlo
 
-El script realizará las siguientes acciones:
+## 📁 Estructura del Proyecto
 
-1. **Verificación de Prerrequisitos**
-   - Comprueba versiones de Python y Git
-   - Verifica permisos necesarios
-
-2. **Configuración de GitHub**
-   - Valida/solicita token de GitHub
-   - Configura credenciales de Git
-
-3. **Instalación de Gestores de Paquetes**
-   - Instala/actualiza nvm (Node.js)
-   - Instala/actualiza pyenv (Python)
-
-4. **Por cada repositorio**:
-   - Clona/actualiza el repositorio
-   - Instala dependencias
-   - Configura variables de entorno
-   - Ejecuta pruebas
-
-5. **Configuración de Claude Desktop**
-   - Genera archivo de configuración
-   - Lo coloca en la ubicación correcta
-
-### Opciones de Ejecución
-
-```bash
-python setup.py --help  # Muestra opciones disponibles
-python setup.py --verbose  # Modo verboso
-python setup.py --skip-tests  # Omite ejecución de pruebas
+```
+mcp-setup/
+├── config/
+│   ├── default.properties
+│   └── repositories.json
+├── scripts/
+│   ├── install_dependencies.ps1
+│   └── install_dependencies.sh
+├── src/
+│   ├── core/
+│   │   ├── base_mcp.py
+│   │   └── setup_orchestrator.py
+│   ├── mcps/
+│   │   ├── google_calendar/
+│   │   │   └── google_calendar_mcp.py
+│   │   └── trello/
+│   │       └── trello_mcp.py
+│   └── utils/
+│       └── file_utils.py
+├── requirements.txt
+└── README.md
 ```
 
+## 🔍 Solución de Problemas
 
-# Configurar el repositorio remoto (asumiendo que ya está creado en GitHub)
-# git remote add origin https://github.com/your-org/mcp-setup.git
-# git push -u origin develop 
+### Problemas Comunes
+
+1. **Error de permisos**
+   - Asegúrate de ejecutar los scripts como administrador
+   - Verifica los permisos de escritura en el directorio base
+
+2. **Error de dependencias**
+   - Verifica que Python 3.10+ y Node.js 18+ estén instalados
+   - Reinstala las dependencias si es necesario
+
+3. **Error de autenticación**
+   - Verifica que las credenciales en `repositories.json` sean correctas
+   - Para Google Calendar, sigue el proceso de autenticación manual si es necesario
+
+### Logs y Depuración
+
+- Los logs se guardan en el directorio `logs/`
+- Cada MCP tiene su propio archivo de log
+- Los errores se muestran en la consola con detalles
+
+## 🤝 Contribuir
+
+1. Fork el repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles. 
