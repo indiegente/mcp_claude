@@ -1,23 +1,30 @@
 {
+  "base_path": "C:/Users/USUARIO/Documents/MCP_SERVERS",
   "repositories": [
     {
-      "name": "linkedin-extract",
-      "url": "https://github.com/your-org/linkedin-extract",
+      "name": "mcp-server-trello",
+      "url": "https://github.com/your-org/mcp-server-trello.git",
       "type": "node",
-      "required_env": ["LINKEDIN_API_KEY"],
-      "config_template": {
-        "api_key": "${LINKEDIN_API_KEY}"
+      "required_env": [
+        "TRELLO_API_KEY",
+        "TRELLO_TOKEN",
+        "TRELLO_BOARD_ID"
+      ],
+      "env_vars": {
+        "TRELLO_API_KEY": "your-api-key",
+        "TRELLO_TOKEN": "your-token",
+        "TRELLO_BOARD_ID": "your-board-id"
       }
     },
     {
-      "name": "brave-search",
-      "url": "https://github.com/your-org/brave-search",
-      "type": "python",
-      "required_env": ["BRAVE_API_KEY"],
-      "config_template": {
-        "api_key": "${BRAVE_API_KEY}"
+      "name": "mcp-google-calendar",
+      "url": "https://github.com/your-org/mcp-google-calendar.git",
+      "type": "node",
+      "env_vars": {
+        "GOOGLE_CLIENT_ID": "your-client-id",
+        "GOOGLE_CLIENT_SECRET": "your-client-secret",
+        "GOOGLE_REFRESH_TOKEN": "your-refresh-token"
       }
     }
-    // ... otros repositorios
   ]
 } 
